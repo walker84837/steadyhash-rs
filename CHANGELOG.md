@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## \[0.1.1\] - 2023-12-08
 
+### Added
+
+  - Added unit tests in `hashing.rs`.
+
 ### Changed
 
   - Changed from `std::process:ExitCode` to `anyhow::Result` for error handling.
