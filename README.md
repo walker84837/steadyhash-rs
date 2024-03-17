@@ -1,51 +1,63 @@
-# sha256sum-win
+# steadyhash: reliable file integrity checker
 
-`sha256sum-win` is a port of the sha256sum command, written in Rust.
-**Disclaimer**: This project is still under heavy development, and breaking changes are expected.
+SteadyHash provides a straightforward way to handle SHA-1, SHA-256, and SHA-512
+checksums. It allows users to generate checksums for files and also verify
+checksums against provided values.
 
-## Installation
+## Usage
 
-Ensure you have [Rust](https://rustup.rs/) installed in order to compile the project. Clone the repository and run:
+To use this utility, follow these steps:
 
-``` bash
-cargo build --release
-```
+1.  Ensure you have Rust and Cargo installed. If not, you can install them from
+    Rust's [official website](https://www.rust-lang.org/tools/install).
+2.  Clone this repository to your local machine.
+3.  Navigate to the project directory.
+4.  Run `cargo run --release` to run and build the utility.
 
-## Usage: examples
+### Command-line arguments
 
-Print SHA256 checksum:
+### Generating checksums
+
+To generate a checksum for a file, use the following command:
+
+Usage: steadyhash \[OPTIONS\] --type \<CHECKSUM\> \[FILEs\]...
+
+Arguments: \[FILEs\]... : the files to process
+
+Options:
+
+  - `-t, --type`: the type of SHA checksum (1, 256, 512)
+  - `-c, --check`: read checksums from the FILEs and check them
+  - `--tag`: create a BSD-style checksum
+  - `--binary`: read in binary mode
+  - `-s, --stdin`: read data from stdin
+  - `-h, --help`: print help
+  - `-V, --version`: print version
+
+### Verifying checksums
+
+To verify a checksum against a file, use the following command:
 
 ``` console
-$ sha256sum-win path/to/file
+$ steadyhash --check --type [CHECKSUM_TYPE] [FILE_PATH]
 ```
 
-Check SHA256 checksum:
+## Roadmap
 
-``` console
-$ sha256sum-win --check path/to/checksum/file.sha256
-```
+  - [ ] Support for multiple platforms (as of now only Unix-like are supported)
+  - [ ] Support for checking BSD-style checksums
+  - [ ] Configuration (maybe)
 
 ## Support
 
-For help or suggestions, please open an [issue](https://github.com/walker84837/sha256sum-win-rs/issues).
-
-## Contributing
-
-Contributions are welcome\! If you want to contribute, please:
-
-  - Try to use the least amount of `unsafe` blocks. If that's needed make some safe wrapper function around it.
-  - I recommend you to use Windows functions (`winapi` or `std::os::windows`) if performance will be better.
-  - Prefer using the standard library over reinventing the wheel.
-  - Format code with
-    ``` console
-    rustfmt --edition 2021
-    ```
-  - If you would like to make big changes (eg. changing libraries for checksums or removing files), open an issue, explaining what you'd like to change, the main reasons as to why, and what is the difference between using it or not.
+If you encounter any issues or have questions about this utility, feel free to
+[open an issue](https://github.com/walker84837/steadyhash-rs/issues).
 
 ## License
 
-This project is dual-licensed under the [Apache 2.0](LICENSE_APACHE.md) or [MIT](LICENSE_MIT.md) licenses.
+This project is licensed under the [GPL-3.0](LICENSE.md).
 
-## Project Status
-
-As of now, development is not very active, and updates occur when time permits. Feel free to contribute if interested.
+Contributions are welcome. Feel free to fork this repository and submit pull
+requests with improvements or bug fixes. If you're unsure about something, open
+an issue to discuss it further. Thank you to all contributors who can help make
+this project better\!
