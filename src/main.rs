@@ -1,11 +1,9 @@
 use anyhow::{anyhow, Result};
 use clap::Parser;
 use std::{
-    fmt,
     fs::File,
     io::{self, BufRead, BufReader, Read},
-    os::unix::ffi::OsStrExt,
-    path::PathBuf,
+    path::{Path, PathBuf}
 };
 
 mod hashing;
@@ -53,30 +51,21 @@ impl<R: Read> ReadToEnd for BufReader<R> {
     }
 }
 
-/// Custom formatter for Vec<u8> to print bytes in hexadecimal format
-struct HexBytes(Vec<u8>);
-
-impl fmt::Display for HexBytes {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        for byte in &self.0 {
-            let b = *byte as u8;
-            write!(f, "{}", b as char)?;
-        }
-        Ok(())
-    }
+/// Get the file name in a path, like the `basename` Linux command
+fn basename(file: &Path) -> Result<String> {
+    Ok(file
+        .to_path_buf()
+        .file_name()
+        .ok_or_else(|| anyhow!("File doesn't exist."))?
+        .to_os_string()
+        .to_string_lossy()
+        .into_owned()
+        .chars()
+        .filter(|&x| x != '\u{FFFD}')
+        .collect())
 }
 
 fn main() -> Result<()> {
-    let basename = |file: &PathBuf| -> Result<Vec<u8>> {
-        Ok(file
-            .to_path_buf()
-            .file_name()
-            .ok_or_else(|| anyhow!("File doesn't exist."))?
-            .to_os_string()
-            .as_bytes()
-            .to_vec())
-    };
-
     let args = Args::parse();
 
     for file in &args.file_path {
@@ -101,7 +90,7 @@ fn main() -> Result<()> {
             _ => return Err(anyhow!("Invalid type: {}", args.checksum_type)),
         };
 
-        let file_path_checksum = HexBytes(basename(file)?);
+        let file_path_checksum = basename(file)?;
 
         if args.check {
             let expected_checksum = read_expected_checksum(&checksum, file, args.bsd)?;
