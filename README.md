@@ -1,8 +1,7 @@
 # steadyhash: reliable file integrity checker
 
-SteadyHash provides a straightforward way to handle SHA-1, SHA-256, and SHA-512
-checksums. It allows users to generate checksums for files and also verify
-checksums against provided values.
+SteadyHash provides a straightforward way to generate and verify SHA-1, SHA-256,
+and SHA-512 checksums.
 
 ## Usage
 
@@ -20,13 +19,16 @@ To use this utility, follow these steps:
 
 To generate a checksum for a file, use the following command:
 
-Usage: steadyhash \[OPTIONS\] --type \<CHECKSUM\> \[FILEs\]...
+Usage: `steadyhash [OPTIONS] --type <CHECKSUM> [FILEs]...`
 
-Arguments: \[FILEs\]... : the files to process
+Arguments: `[FILEs]... : the files to process`
 
 Options:
 
-  - `-t, --type`: the type of SHA checksum (1, 256, 512)
+  - `-t, --type`: the type of SHA checksum. Possible valeus are:
+      - 1 (SHA-1)
+      - 256 (SHA-256)
+      - 512 (SHA-512)
   - `-c, --check`: read checksums from the FILEs and check them
   - `--tag`: create a BSD-style checksum
   - `--binary`: read in binary mode
@@ -44,9 +46,10 @@ $ steadyhash --check --type [CHECKSUM_TYPE] [FILE_PATH]
 
 ## Roadmap
 
-  - [ ] Support for multiple platforms (as of now only Unix-like are supported)
-  - [ ] Support for checking BSD-style checksums
-  - [ ] Configuration (maybe)
+  - \[X\] Support for multiple platforms (as of now only Unix-like are
+    supported)
+  - \[ \] Support for checking BSD-style checksums
+  - \[ \] Configuration (maybe)
 
 ## Support
 
