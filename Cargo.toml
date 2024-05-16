@@ -1,12 +1,26 @@
 [package]
-name = "steadyhash-rs"
-version = "0.1.0"
+name = "steadyhash"
+version = "0.3.0"
 edition = "2021"
+license = "GPL-3.0"
+categories = ["command-line-utilities", "cryptography"]
+keywords = ["command-line", "cli", "integrity-checker"]
+readme = "README.md"
+repository = "https://github.com/walker84837/steadyhash-rs"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[profile.dev]
+debug = false
+
+[profile.release]
+strip = true
+lto = true
+overflow-checks = true
+panic = "abort"
 
 [dependencies]
 anyhow = "1.0"
 clap = { version = "4.5.3", features = ["derive"] }
 sha2 = "0.10"
 sha1 = "0.10.6"
+thiserror = "1.0.60"
+blake2 = "0.10.6"

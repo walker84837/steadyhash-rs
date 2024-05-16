@@ -1,8 +1,7 @@
 # steadyhash: reliable file integrity checker
 
-SteadyHash provides a straightforward way to handle SHA-1, SHA-256, and SHA-512
-checksums. It allows users to generate checksums for files and also verify
-checksums against provided values.
+SteadyHash provides a straightforward way to generate and verify SHA-1, SHA-256,
+SHA-512, Blake2b-512 and Blake2b-256 checksums.
 
 ## Usage
 
@@ -20,38 +19,59 @@ To use this utility, follow these steps:
 
 To generate a checksum for a file, use the following command:
 
-Usage: steadyhash \[OPTIONS\] --type \<CHECKSUM\> \[FILEs\]...
+Usage: `steadyhash [OPTIONS] --type <CHECKSUM> [FILEs]...`
 
-Arguments: \[FILEs\]... : the files to process
+Arguments: `[FILEs]... : the files to process`
 
 Options:
 
-  - `-t, --type`: the type of SHA checksum (1, 256, 512)
-  - `-c, --check`: read checksums from the FILEs and check them
+  - `-t, --type`: the type of SHA checksum. Possible values are:
+    - `sha`
+    - `blake`
+    - `b2`
+    - `blake2`
+  - `-l, --length`: the bit length of the checksum:
+    - The valid values for `sha` are:
+        - `160`
+        - `256`
+        - `512`
+    - The valid values for `blake` are:
+        - `256`
+        - `512`
+  - `-c, --check`: read checksums from the FILEs and check them (unimplemented)
   - `--tag`: create a BSD-style checksum
-  - `--binary`: read in binary mode
+  - `--binary`: read in binary mode (does nothing)
   - `-s, --stdin`: read data from stdin
   - `-h, --help`: print help
   - `-V, --version`: print version
 
-### Verifying checksums
+#### Examples
 
-To verify a checksum against a file, use the following command:
+  - Generate a SHA256 BSD-style checksum:
+    ```console
+    $ steadyhash -l 256 -t sha foo.bar
+    ```
 
-``` console
-$ steadyhash --check --type [CHECKSUM_TYPE] [FILE_PATH]
-```
+  - Generate a Blake2b-256 checksum:
+    ```console
+    $ steadyhash -l 256 -t b2 foo.bar
+    ```
+
+  - Generate a SHA1 BSD-style checksum:
+    ```console
+    $ steadyhash -l 160 -t sha --tag foo.bar
+    ````
 
 ## Roadmap
 
-  - [ ] Support for multiple platforms (as of now only Unix-like are supported)
-  - [ ] Support for checking BSD-style checksums
+  - [X] Support for multiple platforms
+  - [ ] Support for checking checksums
   - [ ] Configuration (maybe)
 
 ## Support
 
 If you encounter any issues or have questions about this utility, feel free to
-[open an issue](https://github.com/walker84837/steadyhash-rs/issues).
+[open an issue](https://github.com/walker84837/steadyhash/issues).
 
 ## License
 
