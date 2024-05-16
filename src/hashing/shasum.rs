@@ -1,16 +1,19 @@
-use anyhow::{anyhow, Result};
+use crate::errors::ShaSumError;
 use sha1::Sha1;
 use sha2::{Digest, Sha256, Sha512};
 
 pub struct ShaSum<'a> {
+    /// Bit length of the checksum
     checksum_type: i32,
+
+    /// Data to process
     data: &'a [u8],
 }
 
 impl ShaSum<'_> {
-    pub fn new(checksum_type: i32, data: &[u8]) -> Result<ShaSum<'_>> {
-        if ![1, 256, 512].contains(&checksum_type) {
-            return Err(anyhow!("Invalid checksum type"));
+    pub fn new(checksum_type: i32, data: &[u8]) -> Result<ShaSum<'_>, ShaSumError> {
+        if ![160, 256, 512].contains(&checksum_type) {
+            return Err(ShaSumError::InvalidChecksumType(checksum_type));
         }
 
         Ok(ShaSum {
@@ -19,26 +22,26 @@ impl ShaSum<'_> {
         })
     }
 
-    pub fn get_checksum(&self) -> String {
+    pub fn get_checksum(&self) -> Result<String, ShaSumError> {
         match self.checksum_type {
-            512 => {
+            512 => { // SHA-512
                 let mut hasher = Sha512::new();
                 hasher.update(self.data);
-                format!("{:x}", hasher.finalize())
+                Ok(format!("{:x}", hasher.finalize()))
             }
-            256 => {
+            256 => { // SHA-256
                 let mut hasher = Sha256::new();
                 hasher.update(self.data);
-                format!("{:x}", hasher.finalize())
+                Ok(format!("{:x}", hasher.finalize()))
             }
-            1 => {
+            160 => { // SHA-1
                 let mut hasher = Sha1::new();
                 hasher.update(self.data);
-                format!("{:x}", hasher.finalize())
+                Ok(format!("{:x}", hasher.finalize()))
             }
-            _ => {
-                panic!("Somehow, the options weren't handled correctly.");
-            }
+            _ => Err(ShaSumError::UnexpectedError(
+                "Somehow, the options weren't handled correctly.".to_string(),
+            )),
         }
     }
 }

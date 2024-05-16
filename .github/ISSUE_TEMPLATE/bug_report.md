@@ -30,6 +30,6 @@ If applicable, add screenshots to help explain your problem.
 ## Environment
 
 - OS: [e.g., Windows 10]
-- `sha256sum-win` Version: [e.g., 1.0.0]
+- `steadyhash` Version: [e.g., 1.0.0]
 - Additional context or information that might be relevant.
 
