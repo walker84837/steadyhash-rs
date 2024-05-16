@@ -59,7 +59,7 @@ mod tests {
         // echo 'i use arch btw' | sha512sum -b
         let expected_checksum = "2ddbe9f9af5a630d3734ce469fac19088e8d0242541768630777de5c56dc4053d346a67527cb95de3ab094d6862f393392ba26bed459d9ad149b423aeae552a2"
             .to_owned();
-        let actual_checksum = checksummer.get_checksum();
+        let actual_checksum = checksummer.get_checksum().unwrap();
         assert_eq!(actual_checksum, expected_checksum);
     }
 
@@ -72,7 +72,7 @@ mod tests {
         let expected_checksum =
             "80799b90f4c070668b52df31830b60ef767bb039000eec4266f285d498002bb5".to_owned();
 
-        let actual_checksum = checksummer.get_checksum();
+        let actual_checksum = checksummer.get_checksum().unwrap();
         assert_eq!(actual_checksum, expected_checksum);
     }
 
@@ -80,11 +80,11 @@ mod tests {
     fn test_sha1sum() {
         let data = b"i use arch btw\n";
 
-        let checksummer = ShaSum::new(1, data).unwrap();
+        let checksummer = ShaSum::new(160, data).unwrap();
 
         let expected_checksum = "821609590ef05d00b20c5f4c5a28c56627480eb7".to_owned();
 
-        let actual_checksum = checksummer.get_checksum();
+        let actual_checksum = checksummer.get_checksum().unwrap();
         assert_eq!(actual_checksum, expected_checksum);
     }
 }
